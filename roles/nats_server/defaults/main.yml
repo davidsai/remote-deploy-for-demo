@@ -1,0 +1,9 @@
+---
+
+gnatsd_version: 0.7.2
+gnatsd_download_url: https://github.com/nats-io/gnatsd/releases/download/v{{ gnatsd_version }}/gnatsd-v{{ gnatsd_version }}-linux-arm.tar.gz
+gnatsd_src: /usr/local/src
+gnatsd_conf_file: /etc/gnatsd.conf
+gnatsd_install_dir: /usr/local/sbin
+gnatsd_executable: /usr/local/sbin/gnatsd
+gnatsd_port: 4222

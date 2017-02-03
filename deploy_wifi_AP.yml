@@ -1,0 +1,10 @@
+---
+- name: set up wifi access point on specified pis
+  hosts: wifi_AP
+  roles:
+    - wifi_AP
+
+- name: disable wifi access point on other pis
+  hosts: raspi:!wifi_AP
+  roles:
+    - non_wifi_AP

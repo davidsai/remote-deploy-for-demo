@@ -1,0 +1,14 @@
+---
+
+  - name: Update firmware of NodeMCU
+    hosts: NodeMCU_deployer
+    vars:
+      binary_path: /home/sai030/Desktop/NodeMCU_binary/Arduino-nats-streaming-client.ino.bin
+      install_dir: /home/pi/Desktop/
+    tasks:
+    - name: deploy binary file to raspi
+      copy: src={{binary_path}} dest={{install_dir}}Arduino-nats-streaming-client.ino.bin
+
+    - name: update firmware of NodeMCU
+      command: curl -v -F "image=@{{install_dir}}Arduino-nats-streaming-client.ino.bin" {{item}}/update
+      with_items: "{{groups['NodeMCU']}}"

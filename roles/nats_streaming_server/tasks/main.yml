@@ -1,0 +1,16 @@
+---
+
+  # - name: Download binary
+  #   unarchive:
+  #     src={{ download_url }}
+  #     dest={{install_dir}}
+  #     copy=no
+  #     creates={{executable}}
+  #
+  # # - name: Copy gnatsd config file
+  #
+  # - name: Copy supervisor conf file
+  #   template: src=streaming-supervisor.conf dest=/etc/supervisor/conf.d/nats-streaming.conf
+
+  - name: Restart supervisord instance of nats streaming server
+    supervisorctl: name=nats-streaming state=restarted

@@ -1,0 +1,9 @@
+[
+  { "key": "test",
+    "value": {
+      "server": "nats://{{groups['nats_streaming_server'][0]}}:4222",
+      "inputStream": "test",
+      "outputStream": "testOut"
+    }
+  }
+]

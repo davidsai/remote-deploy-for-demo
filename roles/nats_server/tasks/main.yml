@@ -1,0 +1,17 @@
+---
+
+- name: Download gnatsd binary
+  unarchive:
+    src={{ gnatsd_download_url }}
+    dest={{ gnatsd_install_dir }}
+    copy=no
+    creates={{gnatsd_executable}}
+
+- name: Copy gnatsd config file
+  template: src=gnatsd.conf dest={{ gnatsd_conf_file }}
+
+- name: Copy supervisor conf file
+  template: src=gnatsd-supervisor.conf dest=/etc/supervisor/conf.d/gnatsd.conf
+
+- name: Restart supervisord instance of gnatsd
+  supervisorctl: name=gnatsd state=restarted

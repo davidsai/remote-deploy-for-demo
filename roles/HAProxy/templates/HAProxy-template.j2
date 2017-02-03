@@ -1,0 +1,20 @@
+global
+    user haproxy
+    group haproxy
+#    daemon
+    debug
+
+defaults
+    mode tcp
+    timeout connect 500000
+    timeout client 5000000
+    timeout server 5000000
+
+frontend esp
+    mode tcp
+    bind *:4224
+    default_backend svr
+
+backend svr
+    mode tcp
+    server localsvr {{groups['nats_streaming_server'][0]}}:4222 check

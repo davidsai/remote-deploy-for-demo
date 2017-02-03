@@ -1,0 +1,22 @@
+---
+  
+- name: Uninstall dnsmasq and hostapd
+  apt: name={{item}} state=absent
+  with_items:
+    - dnsmasq
+    - hostapd
+
+- name: Undo configure wlan0 interface with a static IP
+  template:
+    src: dhcpcd.conf.original.j2
+    dest: /etc/dhcpcd.conf
+
+- name: Undo configure wlan0 interface with a static IP continued
+  template:
+    src: interfaces.original.j2
+    dest: /etc/network/interfaces
+
+- name: Undo set up ipv4 forwarding
+  template:
+    src: rc.local.original.j2
+    dest: /etc/rc.local

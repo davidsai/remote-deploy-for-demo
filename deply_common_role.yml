@@ -1,0 +1,6 @@
+---
+
+- name: deploy common role
+  hosts: raspi
+  roles:
+    - common

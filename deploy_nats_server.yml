@@ -1,0 +1,37 @@
+---
+- name: set up nats server on specified pis
+  hosts: nats_server
+  roles:
+    - { role: nats_server, version: 0.5.6 }
+
+- name: uninstall nats server on other pis
+  hosts: raspi:!nats_server
+  tasks:
+  - name: Stop supervisord instance of gnatsd
+    shell: /usr/bin/supervisorctl stop gnatsd
+    register: shell_result
+    ignore_errors: True
+
+  - include_vars:
+      file: roles/nats_server/defaults/main.yml
+
+  - name: remove executable
+    file:
+      path: "{{gnatsd_executable}}"
+      state: absent
+
+  - name: remove gnatsd config file
+    file:
+      path: "{{ gnatsd_conf_file }}"
+      state: absent
+
+  - name: remove supervisor conf file
+    file:
+      path: /etc/supervisor/conf.d/gnatsd.conf
+      state: absent
+
+  - name: Update supervisord to stop and remove gnatsd
+    supervisorctl:
+      name: gnatsd
+      state: absent
+    when: shell_result.stderr.find('not found')==-1

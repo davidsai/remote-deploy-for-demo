@@ -1,0 +1,48 @@
+- name: Install dnsmasq and hostapd
+  apt: name={{item}} state=present
+  with_items:
+    - dnsmasq
+    - hostapd
+
+- name: configure wlan0 interface with a static IP
+  template:
+    src: dhcpcd.conf.j2
+    dest: /etc/dhcpcd.conf
+
+- name: configure wlan0 interface with a static IP continued
+  template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+
+- name: configure hostapd
+  template:
+    src: hostapd.conf.j2
+    dest: /etc/hostapd/hostapd.conf
+
+- name: configure hostapd continued
+  template:
+    src: hostapd.j2
+    dest: /etc/default/hostapd
+
+- name: configure dnsmasq
+  template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+
+- name: set up ipv4 forwarding
+  template:
+    src: rc.local.j2
+    dest: /etc/rc.local
+
+- name: start dnsmasq service
+  service: name=dnsmasq enabled=yes
+
+- name: start hostapd service
+  service: name=hostapd enabled=yes
+
+- name: restart machine
+  shell: sleep 2 && shutdown -r now
+  async: 1
+  poll: 0
+  become: true
+  ignore_errors: true

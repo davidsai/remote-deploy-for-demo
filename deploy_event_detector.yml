@@ -1,0 +1,37 @@
+---
+- name: shut down event detector on other pis
+  hosts: raspi:!event_detector
+  tasks:
+  - name: Stop supervisord instance of event detector
+    shell: /usr/bin/supervisorctl stop event_detector
+    register: shell_result
+    ignore_errors: True
+
+  # - include_vars:
+  #     file: group_vars/event_detector.yml
+  #
+  # - name: remove settings file
+  #   file:
+  #     path: "{{install_dir}}settings.json"
+  #     state: absent
+  #
+  # - name: remove jar file
+  #   file:
+  #     path: "{{install_dir}}envoy-assembly-0.0.1-SNAPSHOT.jar"
+  #     state: absent
+  #
+  # - name: remove supervisor conf file
+  #   file:
+  #     path: /etc/supervisor/conf.d/event_detector.conf
+  #     state: absent
+  #
+  # - name: Update supervisord to stop and remove event detector
+  #   supervisorctl:
+  #     name: event_detector
+  #     state: absent
+  #   when: shell_result.stderr.find('not found')==-1
+
+- name: install event detector on specified pis
+  hosts: event_detector
+  roles:
+    - event_detector

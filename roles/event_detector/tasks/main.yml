@@ -1,0 +1,19 @@
+---
+
+- name: Stop supervisord instance of event detector
+  shell: /usr/bin/supervisorctl stop event_detector
+  changed_when: False
+
+- name: deploy settings file
+  template: src=settings.json dest={{install_dir}}settings.json
+
+# - name: deploy jar file
+#   copy: src=envoy-assembly-0.0.1-SNAPSHOT.jar dest={{install_dir}}envoy-assembly-0.0.1-SNAPSHOT.jar
+#
+# - name: Copy supervisor conf file
+#   template: src=event_detector-supervisor.conf dest=/etc/supervisor/conf.d/event_detector.conf
+
+- name: Restart supervisord instance of event detector
+  supervisorctl:
+    name=event_detector
+    state=restarted

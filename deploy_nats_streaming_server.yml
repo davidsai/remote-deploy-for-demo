@@ -1,0 +1,33 @@
+---
+
+  - name: start nats streaming server on specified pis
+    hosts: nats_streaming_server
+    roles:
+      - { role: nats_streaming_server }
+
+  - name: shut down nats streaming server on other pis
+    hosts: raspi:!nats_streaming_server
+    tasks:
+    - name: Stop supervisord instance of streaming server
+      shell: /usr/bin/supervisorctl stop nats-streaming
+      register: shell_result
+      ignore_errors: True
+
+    # - include_vars:
+    #     file: roles/nats_streaming_server/defaults/main.yml
+    #
+    # - name: remove executable
+    #   file:
+    #     path: "{{executable}}"
+    #     state: absent
+    #
+    # - name: remove supervisor conf file
+    #   file:
+    #     path: /etc/supervisor/conf.d/nats-streaming.conf
+    #     state: absent
+    #
+    # - name: Update supervisord to stop and remove streaming server
+    #   supervisorctl:
+    #     name: nats-streaming
+    #     state: absent
+    #   when: shell_result.stderr.find('not found')==-1

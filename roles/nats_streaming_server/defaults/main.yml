@@ -1,0 +1,7 @@
+---
+  version: v0.3.8
+  download_url: https://github.com/nats-io/nats-streaming-server/releases/download/{{version}}/nats-streaming-server-{{version}}-linux-arm.zip
+  install_dir: /home/pi/Desktop
+  executable: /home/pi/Desktop/nats-streaming-server-{{version}}-linux-arm/nats-streaming-server-{{version}}
+  conf_file:
+  port: 4222

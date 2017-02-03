@@ -1,0 +1,9 @@
+---
+
+- name: test gnatsd role
+  hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+    - include_vars: './defaults/main.yml'
+    - include: 'tasks/main.yml'
